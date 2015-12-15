@@ -15,7 +15,7 @@ $rbenv_init_statement = 'eval \"\$(rbenv init -)\"'
 $oracle_version_long = "12.1.0.1.0"
 $oracle_version_short = "12.1"
 $oracle_install_path = "/usr/lib/oracle"
-$oracle_source_path = "/vagrant/oracle_rpms"
+$oracle_source_path = "/vagrant/manifests/modules/oracle_instant"
 $oracle_basic_filename = "oracle-instantclient${oracle_version_short}-basic-${oracle_version_long}-1.x86_64"
 $oracle_sqlplus_filename = "oracle-instantclient${oracle_version_short}-sqlplus-${oracle_version_long}-1.x86_64"
 $oracle_devel_filename = "oracle-instantclient${oracle_version_short}-devel-${oracle_version_long}-1.x86_64"
@@ -40,6 +40,15 @@ package {"git":
 	provider => apt
 }
 
+package {"libaio1":
+	ensure => latest,
+	provider => apt
+}
+
+package {"libaio-dev":
+	ensure => latest,
+	provider => apt
+}
 #exec {"installing gui":
 #	command => 	"sudo apt-get install -y ubuntu-desktop",
 #	path	=>	$exec_path
@@ -49,3 +58,4 @@ include oracle_instant
 include ruby_rails_gems
 include openresty
 include nodejs
+include aws-cli
