@@ -86,18 +86,34 @@ class ruby_rails_gems{
   }
   
 # ENVIRONMENTAL SETTINGS
-  exec {"bash -c 'echo \"export PATH=${exec_path}\" >> /home/${user}/.bashrc'":
-	path => 	$exec_path,
-	user => 	$user
-  }
-  -> 
-  exec {"bash -c 'echo \"${rbenv_init_statement}\" >> /home/${user}/.bashrc'":
-	path => 	$exec_path,
-	user => 	$user
+  file {"/home/${user}/.bashrc": ensure => present,}
+  ->
+  line {path_text:
+    file => "/home/${user}/.bashrc",
+    line => "export PATH=${exec_path}"
   }
   ->
-  exec {"bash -c 'echo \"rbenv global ${ruby_ver} --default\" >> /home/${user}/.bashrc'":
-	path => 	$exec_path,
-	user => 	$user
+  line {rbenv_init:
+    file => "/home/${user}/.bashrc",
+    line => "${rbenv_init_statement}"
   }
+  ->
+  line {rbenv_version:
+    file => "/home/${user}/.bashrc",
+    line => "rbenv global ${ruby_ver} --default" 
+  }
+  #exec {"bash -c 'echo \"export PATH=${exec_path}\" >> /home/${user}/.bashrc'":
+	#path => 	$exec_path,
+	#user => 	$user
+  #}
+  #-> 
+  #exec {"bash -c 'echo \"${rbenv_init_statement}\" >> /home/${user}/.bashrc'":
+	#path => 	$exec_path,
+	#user => 	$user
+  #}
+  #->
+  #exec {"bash -c 'echo \"rbenv global ${ruby_ver} --default\" >> /home/${user}/.bashrc'":
+	#path => 	$exec_path,
+	#user => 	$user
+  #}
 }
