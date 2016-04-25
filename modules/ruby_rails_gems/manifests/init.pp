@@ -87,9 +87,13 @@ class ruby_rails_gems{
   
 # ENVIRONMENTAL SETTINGS
   file {"/home/${user}/.bashrc": 
-      ensure => present,
-      content => "export PATH=${exec_path} \n ${rbenv_init_statement} \n rbenv global ${ruby_ver} --default"
-}
+      ensure => present
+  }
+  ->
+  exec{"copy rbenv stuff to bashrc":
+    command => "echo \"export PATH=${exec_path} \n ${rbenv_init_statement} \n rbenv global ${ruby_ver} --default\" >> ~/.bashrc",
+    path    => $exec_path
+  }
 # ->
 # file_line {path_text:
 #   file => "/home/${user}/.bashrc",

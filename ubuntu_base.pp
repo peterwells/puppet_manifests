@@ -28,6 +28,10 @@ $openresty_src = "${base_dir}/openresty/src"
 $openresty_root = "/home/${user}/openresty"
 $openresty_filename = "ngx_openresty-1.9.3.1"
 
+# groovy environmental variables
+$groovy_ver = "2.1.9"
+$grails_ver = "2.3.7"
+
 $targz_suffix = ".tar.gz"
 $exec_path = "${rbenv_root}/bin:${rbenv_root}/shims:/usr/local/bin:/usr/bin:/usr/sbin:/bin:/sbin"
 
@@ -54,8 +58,14 @@ package {"libaio-dev":
 #	path	=>	$exec_path
 #}
 
+exec {"ensuring puppet stdlib installed":
+	command => "puppet module install puppetlabs-stdlib",
+	path	=> $exec_path
+}
+
 include oracle_instant
-include ruby_rails_gems
-include openresty
-include nodejs
-include aws-cli
+#include ruby_rails_gems
+#include openresty
+#include nodejs
+#include aws-cli
+include groovy_grails
